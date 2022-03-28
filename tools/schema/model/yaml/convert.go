@@ -33,17 +33,17 @@ func Convert(root *Node, def *model.SchemaDef) error {
 			description.Val = key.Contents[0].Val
 			description.Line = key.Line
 		case KeyEvents:
-			events = *key.ToDefMapMap()
+			events = key.ToDefMapMap()
 		case KeyStructs:
-			structs = *key.ToDefMapMap()
+			structs = key.ToDefMapMap()
 		case KeyTypedefs:
-			typedefs = *key.ToDefMap()
+			typedefs = key.ToDefMap()
 		case KeyState:
-			state = *key.ToDefMap()
+			state = key.ToDefMap()
 		case KeyFuncs:
-			funcs = *key.ToFuncDefMap()
+			funcs = key.ToFuncDefMap()
 		case KeyViews:
-			views = *key.ToFuncDefMap()
+			views = key.ToFuncDefMap()
 		default:
 		}
 	}
@@ -67,56 +67,72 @@ func (n *Node) ToDefElt() *model.DefElt {
 	}
 }
 
-func (n *Node) ToDefMap() *model.DefMap {
+func (n *Node) ToDefMap() model.DefMap {
 	defs := make(model.DefMap)
 	for _, yamlKey := range n.Contents {
+		if yamlKey.Val == "{}" {
+			// treat "{}" as empty
+			continue
+		}
 		key := *yamlKey.ToDefElt()
 		defs[key] = yamlKey.Contents[0].ToDefElt()
 	}
-	return &defs
+	return defs
 }
 
-func (n *Node) ToDefMapMap() *model.DefMapMap {
+func (n *Node) ToDefMapMap() model.DefMapMap {
 	defs := make(model.DefMapMap)
 	for _, yamlKey := range n.Contents {
+		if yamlKey.Val == "{}" {
+			// treat "{}" as empty
+			continue
+		}
 		key := model.DefElt{
 			Val:     yamlKey.Val,
 			Comment: yamlKey.Comment,
 			Line:    yamlKey.Line,
 		}
-
-		defs[key] = yamlKey.ToDefMap()
+		val := yamlKey.ToDefMap()
+		defs[key] = &val
 	}
-	return &defs
+	return defs
 }
 
-func (n *Node) ToFuncDef() *model.FuncDef {
+func (n *Node) ToFuncDef() model.FuncDef {
 	def := model.FuncDef{}
 	for _, yamlKey := range n.Contents {
+		if yamlKey.Val == "{}" {
+			// treat "{}" as empty
+			continue
+		}
 		switch yamlKey.Val {
 		case KeyAccess:
 			def.Access = *yamlKey.Contents[0].ToDefElt()
 		case KeyParams:
-			def.Params = *yamlKey.ToDefMap()
+			def.Params = yamlKey.ToDefMap()
 		case KeyResults:
-			def.Results = *yamlKey.ToDefMap()
+			def.Results = yamlKey.ToDefMap()
 		default:
 		}
 
 	}
-	return &def
+	return def
 }
 
-func (n *Node) ToFuncDefMap() *model.FuncDefMap {
+func (n *Node) ToFuncDefMap() model.FuncDefMap {
 	defs := make(model.FuncDefMap)
 	for _, yamlKey := range n.Contents {
+		if yamlKey.Val == "{}" {
+			// treat "{}" as empty
+			continue
+		}
 		key := model.DefElt{
 			Val:     yamlKey.Val,
 			Comment: yamlKey.Comment,
 			Line:    yamlKey.Line,
 		}
-
-		defs[key.Val] = yamlKey.ToFuncDef()
+		val := yamlKey.ToFuncDef()
+		defs[key.Val] = &val
 	}
-	return &defs
+	return defs
 }
