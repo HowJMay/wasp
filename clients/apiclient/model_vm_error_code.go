@@ -20,7 +20,7 @@ var _ MappedNullable = &VMErrorCode{}
 // VMErrorCode struct for VMErrorCode
 type VMErrorCode struct {
 	ContractID *int32 `json:"ContractID,omitempty"`
-	ID *int32 `json:"ID,omitempty"`
+	ID         *int32 `json:"ID,omitempty"`
 }
 
 // NewVMErrorCode instantiates a new VMErrorCode object
@@ -105,7 +105,7 @@ func (o *VMErrorCode) SetID(v int32) {
 }
 
 func (o VMErrorCode) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -158,5 +158,3 @@ func (v *NullableVMErrorCode) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -19,10 +19,10 @@ var _ MappedNullable = &Event{}
 
 // Event struct for Event
 type Event struct {
-	ContractID *int32 `json:"contractID,omitempty"`
-	Payload []int32 `json:"payload,omitempty"`
-	Timestamp *int64 `json:"timestamp,omitempty"`
-	Topic *string `json:"topic,omitempty"`
+	ContractID *int32  `json:"contractID,omitempty"`
+	Payload    []int32 `json:"payload,omitempty"`
+	Timestamp  *int64  `json:"timestamp,omitempty"`
+	Topic      *string `json:"topic,omitempty"`
 }
 
 // NewEvent instantiates a new Event object
@@ -171,7 +171,7 @@ func (o *Event) SetTopic(v string) {
 }
 
 func (o Event) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -230,5 +230,3 @@ func (v *NullableEvent) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

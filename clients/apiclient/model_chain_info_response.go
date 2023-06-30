@@ -24,11 +24,11 @@ type ChainInfoResponse struct {
 	// The chain owner address (Bech32-encoded)
 	ChainOwnerId string `json:"chainOwnerId"`
 	// The EVM chain ID
-	EvmChainId uint32 `json:"evmChainId"`
+	EvmChainId   uint32    `json:"evmChainId"`
 	GasFeePolicy FeePolicy `json:"gasFeePolicy"`
-	GasLimits Limits `json:"gasLimits"`
+	GasLimits    Limits    `json:"gasLimits"`
 	// Whether or not the chain is active
-	IsActive bool `json:"isActive"`
+	IsActive bool                `json:"isActive"`
 	Metadata PublicChainMetadata `json:"metadata"`
 	// The fully qualified public url leading to the chains metadata
 	PublicURL string `json:"publicURL"`
@@ -252,7 +252,7 @@ func (o *ChainInfoResponse) SetPublicURL(v string) {
 }
 
 func (o ChainInfoResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -307,5 +307,3 @@ func (v *NullableChainInfoResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -19,16 +19,16 @@ var _ MappedNullable = &ChainMessageMetrics{}
 
 // ChainMessageMetrics struct for ChainMessageMetrics
 type ChainMessageMetrics struct {
-	InAliasOutput AliasOutputMetricItem `json:"inAliasOutput"`
-	InOnLedgerRequest OnLedgerRequestMetricItem `json:"inOnLedgerRequest"`
-	InOutput InOutputMetricItem `json:"inOutput"`
-	InStateOutput InStateOutputMetricItem `json:"inStateOutput"`
-	InTxInclusionState TxInclusionStateMsgMetricItem `json:"inTxInclusionState"`
-	OutPublishGovernanceTransaction TransactionMetricItem `json:"outPublishGovernanceTransaction"`
-	OutPublisherStateTransaction PublisherStateTransactionItem `json:"outPublisherStateTransaction"`
-	OutPullLatestOutput InterfaceMetricItem `json:"outPullLatestOutput"`
-	OutPullOutputByID UTXOInputMetricItem `json:"outPullOutputByID"`
-	OutPullTxInclusionState TransactionIDMetricItem `json:"outPullTxInclusionState"`
+	InAliasOutput                   AliasOutputMetricItem         `json:"inAliasOutput"`
+	InOnLedgerRequest               OnLedgerRequestMetricItem     `json:"inOnLedgerRequest"`
+	InOutput                        InOutputMetricItem            `json:"inOutput"`
+	InStateOutput                   InStateOutputMetricItem       `json:"inStateOutput"`
+	InTxInclusionState              TxInclusionStateMsgMetricItem `json:"inTxInclusionState"`
+	OutPublishGovernanceTransaction TransactionMetricItem         `json:"outPublishGovernanceTransaction"`
+	OutPublisherStateTransaction    PublisherStateTransactionItem `json:"outPublisherStateTransaction"`
+	OutPullLatestOutput             InterfaceMetricItem           `json:"outPullLatestOutput"`
+	OutPullOutputByID               UTXOInputMetricItem           `json:"outPullOutputByID"`
+	OutPullTxInclusionState         TransactionIDMetricItem       `json:"outPullTxInclusionState"`
 }
 
 // NewChainMessageMetrics instantiates a new ChainMessageMetrics object
@@ -299,7 +299,7 @@ func (o *ChainMessageMetrics) SetOutPullTxInclusionState(v TransactionIDMetricIt
 }
 
 func (o ChainMessageMetrics) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -356,5 +356,3 @@ func (v *NullableChainMessageMetrics) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

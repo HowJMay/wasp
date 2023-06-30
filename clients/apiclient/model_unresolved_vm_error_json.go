@@ -19,7 +19,7 @@ var _ MappedNullable = &UnresolvedVMErrorJSON{}
 
 // UnresolvedVMErrorJSON struct for UnresolvedVMErrorJSON
 type UnresolvedVMErrorJSON struct {
-	Code *string `json:"code,omitempty"`
+	Code   *string  `json:"code,omitempty"`
 	Params []string `json:"params,omitempty"`
 }
 
@@ -105,7 +105,7 @@ func (o *UnresolvedVMErrorJSON) SetParams(v []string) {
 }
 
 func (o UnresolvedVMErrorJSON) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -158,5 +158,3 @@ func (v *NullableUnresolvedVMErrorJSON) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

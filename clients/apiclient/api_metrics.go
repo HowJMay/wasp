@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // MetricsApiService MetricsApi service
 type MetricsApiService service
 
 type ApiGetChainMessageMetricsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *MetricsApiService
-	chainID string
+	chainID    string
 }
 
 func (r ApiGetChainMessageMetricsRequest) Execute() (*ChainMessageMetrics, *http.Response, error) {
@@ -36,26 +35,27 @@ func (r ApiGetChainMessageMetricsRequest) Execute() (*ChainMessageMetrics, *http
 /*
 GetChainMessageMetrics Get chain specific message metrics.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param chainID ChainID (Bech32)
- @return ApiGetChainMessageMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param chainID ChainID (Bech32)
+	@return ApiGetChainMessageMetricsRequest
 */
 func (a *MetricsApiService) GetChainMessageMetrics(ctx context.Context, chainID string) ApiGetChainMessageMetricsRequest {
 	return ApiGetChainMessageMetricsRequest{
 		ApiService: a,
-		ctx: ctx,
-		chainID: chainID,
+		ctx:        ctx,
+		chainID:    chainID,
 	}
 }
 
 // Execute executes the request
-//  @return ChainMessageMetrics
+//
+//	@return ChainMessageMetrics
 func (a *MetricsApiService) GetChainMessageMetricsExecute(r ApiGetChainMessageMetricsRequest) (*ChainMessageMetrics, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ChainMessageMetrics
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ChainMessageMetrics
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetChainMessageMetrics")
@@ -130,8 +130,8 @@ func (a *MetricsApiService) GetChainMessageMetricsExecute(r ApiGetChainMessageMe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
@@ -150,9 +150,9 @@ func (a *MetricsApiService) GetChainMessageMetricsExecute(r ApiGetChainMessageMe
 }
 
 type ApiGetChainPipeMetricsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *MetricsApiService
-	chainID string
+	chainID    string
 }
 
 func (r ApiGetChainPipeMetricsRequest) Execute() (*ConsensusPipeMetrics, *http.Response, error) {
@@ -162,26 +162,27 @@ func (r ApiGetChainPipeMetricsRequest) Execute() (*ConsensusPipeMetrics, *http.R
 /*
 GetChainPipeMetrics Get chain pipe event metrics.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param chainID ChainID (Bech32)
- @return ApiGetChainPipeMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param chainID ChainID (Bech32)
+	@return ApiGetChainPipeMetricsRequest
 */
 func (a *MetricsApiService) GetChainPipeMetrics(ctx context.Context, chainID string) ApiGetChainPipeMetricsRequest {
 	return ApiGetChainPipeMetricsRequest{
 		ApiService: a,
-		ctx: ctx,
-		chainID: chainID,
+		ctx:        ctx,
+		chainID:    chainID,
 	}
 }
 
 // Execute executes the request
-//  @return ConsensusPipeMetrics
+//
+//	@return ConsensusPipeMetrics
 func (a *MetricsApiService) GetChainPipeMetricsExecute(r ApiGetChainPipeMetricsRequest) (*ConsensusPipeMetrics, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ConsensusPipeMetrics
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ConsensusPipeMetrics
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetChainPipeMetrics")
@@ -256,8 +257,8 @@ func (a *MetricsApiService) GetChainPipeMetricsExecute(r ApiGetChainPipeMetricsR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
@@ -276,9 +277,9 @@ func (a *MetricsApiService) GetChainPipeMetricsExecute(r ApiGetChainPipeMetricsR
 }
 
 type ApiGetChainWorkflowMetricsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *MetricsApiService
-	chainID string
+	chainID    string
 }
 
 func (r ApiGetChainWorkflowMetricsRequest) Execute() (*ConsensusWorkflowMetrics, *http.Response, error) {
@@ -288,26 +289,27 @@ func (r ApiGetChainWorkflowMetricsRequest) Execute() (*ConsensusWorkflowMetrics,
 /*
 GetChainWorkflowMetrics Get chain workflow metrics.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param chainID ChainID (Bech32)
- @return ApiGetChainWorkflowMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param chainID ChainID (Bech32)
+	@return ApiGetChainWorkflowMetricsRequest
 */
 func (a *MetricsApiService) GetChainWorkflowMetrics(ctx context.Context, chainID string) ApiGetChainWorkflowMetricsRequest {
 	return ApiGetChainWorkflowMetricsRequest{
 		ApiService: a,
-		ctx: ctx,
-		chainID: chainID,
+		ctx:        ctx,
+		chainID:    chainID,
 	}
 }
 
 // Execute executes the request
-//  @return ConsensusWorkflowMetrics
+//
+//	@return ConsensusWorkflowMetrics
 func (a *MetricsApiService) GetChainWorkflowMetricsExecute(r ApiGetChainWorkflowMetricsRequest) (*ConsensusWorkflowMetrics, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ConsensusWorkflowMetrics
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ConsensusWorkflowMetrics
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetChainWorkflowMetrics")
@@ -382,8 +384,8 @@ func (a *MetricsApiService) GetChainWorkflowMetricsExecute(r ApiGetChainWorkflow
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
@@ -402,7 +404,7 @@ func (a *MetricsApiService) GetChainWorkflowMetricsExecute(r ApiGetChainWorkflow
 }
 
 type ApiGetNodeMessageMetricsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *MetricsApiService
 }
 
@@ -413,24 +415,25 @@ func (r ApiGetNodeMessageMetricsRequest) Execute() (*NodeMessageMetrics, *http.R
 /*
 GetNodeMessageMetrics Get accumulated message metrics.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetNodeMessageMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetNodeMessageMetricsRequest
 */
 func (a *MetricsApiService) GetNodeMessageMetrics(ctx context.Context) ApiGetNodeMessageMetricsRequest {
 	return ApiGetNodeMessageMetricsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return NodeMessageMetrics
+//
+//	@return NodeMessageMetrics
 func (a *MetricsApiService) GetNodeMessageMetricsExecute(r ApiGetNodeMessageMetricsRequest) (*NodeMessageMetrics, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *NodeMessageMetrics
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *NodeMessageMetrics
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetNodeMessageMetrics")
@@ -504,8 +507,8 @@ func (a *MetricsApiService) GetNodeMessageMetricsExecute(r ApiGetNodeMessageMetr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

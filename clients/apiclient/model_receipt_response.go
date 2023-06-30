@@ -19,18 +19,18 @@ var _ MappedNullable = &ReceiptResponse{}
 
 // ReceiptResponse struct for ReceiptResponse
 type ReceiptResponse struct {
-	BlockIndex uint32 `json:"blockIndex"`
+	BlockIndex   uint32  `json:"blockIndex"`
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// The gas budget (uint64 as string)
-	GasBudget string `json:"gasBudget"`
+	GasBudget  string       `json:"gasBudget"`
 	GasBurnLog []BurnRecord `json:"gasBurnLog"`
 	// The burned gas (uint64 as string)
 	GasBurned string `json:"gasBurned"`
 	// The charged gas fee (uint64 as string)
-	GasFeeCharged string `json:"gasFeeCharged"`
-	RawError *UnresolvedVMErrorJSON `json:"rawError,omitempty"`
-	Request RequestDetail `json:"request"`
-	RequestIndex uint32 `json:"requestIndex"`
+	GasFeeCharged string                 `json:"gasFeeCharged"`
+	RawError      *UnresolvedVMErrorJSON `json:"rawError,omitempty"`
+	Request       RequestDetail          `json:"request"`
+	RequestIndex  uint32                 `json:"requestIndex"`
 	// Storage deposit charged (uint64 as string)
 	StorageDepositCharged string `json:"storageDepositCharged"`
 }
@@ -317,7 +317,7 @@ func (o *ReceiptResponse) SetStorageDepositCharged(v string) {
 }
 
 func (o ReceiptResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -378,5 +378,3 @@ func (v *NullableReceiptResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -18,12 +18,11 @@ import (
 	"net/url"
 )
 
-
 // DefaultApiService DefaultApi service
 type DefaultApiService service
 
 type ApiGetHealthRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DefaultApiService
 }
 
@@ -34,22 +33,22 @@ func (r ApiGetHealthRequest) Execute() (*http.Response, error) {
 /*
 GetHealth Returns 200 if the node is healthy.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHealthRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHealthRequest
 */
 func (a *DefaultApiService) GetHealth(ctx context.Context) ApiGetHealthRequest {
 	return ApiGetHealthRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *DefaultApiService) GetHealthExecute(r ApiGetHealthRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodGet
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.GetHealth")
@@ -109,7 +108,7 @@ func (a *DefaultApiService) GetHealthExecute(r ApiGetHealthRequest) (*http.Respo
 }
 
 type ApiV1WsGetRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DefaultApiService
 }
 
@@ -120,22 +119,22 @@ func (r ApiV1WsGetRequest) Execute() (*http.Response, error) {
 /*
 V1WsGet The websocket connection service
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiV1WsGetRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiV1WsGetRequest
 */
 func (a *DefaultApiService) V1WsGet(ctx context.Context) ApiV1WsGetRequest {
 	return ApiV1WsGetRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *DefaultApiService) V1WsGetExecute(r ApiV1WsGetRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodGet
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.V1WsGet")

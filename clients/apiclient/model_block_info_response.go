@@ -24,12 +24,12 @@ type BlockInfoResponse struct {
 	// The burned gas (uint64 as string)
 	GasBurned string `json:"gasBurned"`
 	// The charged gas fee (uint64 as string)
-	GasFeeCharged string `json:"gasFeeCharged"`
-	NumOffLedgerRequests uint32 `json:"numOffLedgerRequests"`
-	NumSuccessfulRequests uint32 `json:"numSuccessfulRequests"`
-	PreviousAliasOutput string `json:"previousAliasOutput"`
-	Timestamp time.Time `json:"timestamp"`
-	TotalRequests uint32 `json:"totalRequests"`
+	GasFeeCharged         string    `json:"gasFeeCharged"`
+	NumOffLedgerRequests  uint32    `json:"numOffLedgerRequests"`
+	NumSuccessfulRequests uint32    `json:"numSuccessfulRequests"`
+	PreviousAliasOutput   string    `json:"previousAliasOutput"`
+	Timestamp             time.Time `json:"timestamp"`
+	TotalRequests         uint32    `json:"totalRequests"`
 }
 
 // NewBlockInfoResponse instantiates a new BlockInfoResponse object
@@ -250,7 +250,7 @@ func (o *BlockInfoResponse) SetTotalRequests(v uint32) {
 }
 
 func (o BlockInfoResponse) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -305,5 +305,3 @@ func (v *NullableBlockInfoResponse) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
