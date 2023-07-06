@@ -48,10 +48,10 @@ func NewCallResultsProxy(v *ScView, resultsProxy *wasmtypes.Proxy) {
 }
 
 func (v *ScView) Call() {
-	v.callWithAllowance(nil)
+	v.callAddAllowance(nil)
 }
 
-func (v *ScView) callWithAllowance(allowance *ScTransfer) {
+func (v *ScView) callAddAllowance(allowance *ScTransfer) {
 	req := wasmrequests.CallRequest{
 		Contract:  v.hContract,
 		Function:  v.hFunction,
@@ -143,7 +143,7 @@ func (f *ScFunc) Call() {
 	if f.delay != 0 {
 		Panic("cannot delay a call")
 	}
-	f.callWithAllowance(f.allowance)
+	f.callAddAllowance(f.allowance)
 }
 
 func (f *ScFunc) Delay(seconds uint32) *ScFunc {

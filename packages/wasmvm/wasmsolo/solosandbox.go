@@ -80,7 +80,7 @@ func (s *SoloSandbox) postSync(contract, function string, params dict.Dict, allo
 	if allowance.IsEmpty() {
 		allowance = transfer
 	}
-	req.WithAllowance(allowance)
+	req.AddAllowance(allowance)
 	// Force a minimum transfer of WasmStorageDeposit base tokens for storage deposit and some gas
 	// excess can always be reclaimed from the chain account by the user
 	// This also removes the silly requirement to transfer 1 base token

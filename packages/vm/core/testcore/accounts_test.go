@@ -26,6 +26,7 @@ import (
 	"github.com/iotaledger/wasp/packages/vm/core/accounts"
 	"github.com/iotaledger/wasp/packages/vm/core/blocklog"
 	"github.com/iotaledger/wasp/packages/vm/gas"
+	"github.com/iotaledger/wasp/packages/wasmvm/wasmlib/go/wasmlib"
 )
 
 const BaseTokensDepositFee = 100
@@ -86,13 +87,16 @@ func TestWithdrawEverything(t *testing.T) {
 
 	// construct request with low allowance (just sufficient for storage deposit balance), so its possible to estimate the gas fees
 	req := solo.NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
-		WithFungibleTokens(isc.NewAssetsBaseTokens(l2balance)).AddAllowance(isc.NewAssetsBaseTokens(5200))
+		AddBaseTokens(l2balance).
+		AddAllowanceBaseTokens(wasmlib.StorageDeposit)
 
 	gasEstimate, fee, err := ch.EstimateGasOffLedger(req, sender, true)
 	require.NoError(t, err)
 
 	// set the allowance to the maximum possible value
-	req = req.WithAllowance(isc.NewAssetsBaseTokens(l2balance - fee)).
+	req = solo.NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
+		AddBaseTokens(l2balance).
+		AddAllowanceBaseTokens(l2balance - fee).
 		WithGasBudget(gasEstimate)
 
 	_, err = ch.PostRequestOffLedger(req, sender)
@@ -1075,7 +1079,7 @@ func TestTransferNFTAllowance(t *testing.T) {
 		solo.NewCallParams(accounts.Contract.Name, accounts.FuncTransferAllowanceTo.Name, dict.Dict{
 			accounts.ParamAgentID: codec.Encode(finalOwnerAgentID),
 		}).
-			WithAllowance(isc.NewEmptyAssets().AddNFTs(nft.ID)).
+			AddAllowance(isc.NewEmptyAssets().AddNFTs(nft.ID)).
 			WithMaxAffordableGasBudget(),
 		initialOwnerWallet,
 	)
@@ -1088,7 +1092,7 @@ func TestTransferNFTAllowance(t *testing.T) {
 	// withdraw to L1
 	_, err = ch.PostRequestSync(
 		solo.NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
-			WithAllowance(isc.NewAssets(1*isc.Million, nil, nft.ID)).
+			AddAllowance(isc.NewAssets(1*isc.Million, nil, nft.ID)).
 			AddBaseTokens(10*isc.Million).
 			WithMaxAffordableGasBudget(),
 		finalOwnerWallet,
@@ -1137,7 +1141,7 @@ func TestUnprocessable(t *testing.T) {
 	})
 
 	withdrawReq := solo.NewCallParams("accounts", "withdraw").
-		WithAllowance(assets).
+		AddAllowance(assets).
 		WithMaxAffordableGasBudget()
 	_, err := v.ch.PostRequestOffLedger(withdrawReq, v.user)
 	require.NoError(t, err)
@@ -1288,7 +1292,7 @@ func TestAllowanceNotEnoughFunds(t *testing.T) {
 		_, err := ch.PostRequestSync(
 			solo.NewCallParams(accounts.Contract.Name, accounts.FuncDeposit.Name).
 				AddBaseTokens(1*isc.Million).
-				WithAllowance(a).
+				AddAllowance(a).
 				WithMaxAffordableGasBudget(),
 			wallet)
 		require.Error(t, err)

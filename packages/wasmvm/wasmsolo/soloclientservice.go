@@ -97,7 +97,7 @@ func (svc *SoloClientService) PostRequest(chainID wasmtypes.ScChainID, hContract
 	req.WithNonce(nonce)
 
 	iscAllowance := cvt.IscAllowance(allowance)
-	req.WithAllowance(iscAllowance)
+	req.AddAllowance(iscAllowance)
 	req.WithMaxAffordableGasBudget()
 	_, err = svc.ctx.Chain.PostRequestOffLedger(req, keyPair)
 	return reqID, err

@@ -107,11 +107,12 @@ func test2Chains(t *testing.T, w bool) {
 	// also cover gas fee for `FuncWithdrawFromChain` on chain2
 	assetsBaseTokens := reqAllowance + isc.Million
 
-	_, err = chain2.PostRequestSync(solo.NewCallParams(ScName, sbtestsc.FuncWithdrawFromChain.Name,
+	_, err = chain2.PostRequestSync(solo.NewCallParams(
+		ScName, sbtestsc.FuncWithdrawFromChain.Name,
 		sbtestsc.ParamChainID, chain1.ChainID,
 		sbtestsc.ParamBaseTokens, baseTokensToWithdrawFromChain1).
 		AddBaseTokens(assetsBaseTokens).
-		WithAllowance(isc.NewAssetsBaseTokens(reqAllowance)).
+		AddAllowanceBaseTokens(reqAllowance).
 		WithGasBudget(isc.Million),
 		userWallet)
 	require.NoError(t, err)

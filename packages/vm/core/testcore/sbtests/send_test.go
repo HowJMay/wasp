@@ -277,7 +277,7 @@ func testNFTOffledgerWithdraw(t *testing.T, w bool) {
 	require.True(t, ch.HasL2NFT(isc.NewAgentID(issuerAddr), &nft.ID))
 
 	wdReq := solo.NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
-		WithAllowance(isc.NewAssets(10_000, nil, nft.ID)).
+		AddAllowance(isc.NewAssets(10_000, nil, nft.ID)).
 		WithMaxAffordableGasBudget()
 
 	_, err = ch.PostRequestOffLedger(wdReq, wallet)

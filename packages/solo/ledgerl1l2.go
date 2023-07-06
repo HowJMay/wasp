@@ -203,7 +203,7 @@ func (fp *foundryParams) CreateFoundry() (uint32, iotago.NativeTokenID, error) {
 		user = fp.user
 	}
 	req := CallParamsFromDict(accounts.Contract.Name, accounts.FuncFoundryCreateNew.Name, par).
-		WithAllowance(isc.NewAssetsBaseTokens(allowanceForFoundryStorageDeposit))
+		AddAllowanceBaseTokens(allowanceForFoundryStorageDeposit)
 
 	gas, _, err := fp.ch.EstimateGasOnLedger(req, user, true)
 	if err != nil {
@@ -245,7 +245,7 @@ func (ch *Chain) MintTokens(foundry, amount interface{}, user *cryptolib.KeyPair
 		accounts.ParamFoundrySN, toFoundrySN(foundry),
 		accounts.ParamSupplyDeltaAbs, util.ToBigInt(amount),
 	).
-		WithAllowance(isc.NewAssetsBaseTokens(allowanceForModifySupply)) // enough allowance is needed for the storage deposit when token is minted first on the chain
+		AddAllowanceBaseTokens(allowanceForModifySupply) // enough allowance is needed for the storage deposit when token is minted first on the chain
 	g, _, err := ch.EstimateGasOnLedger(req, user, true)
 	if err != nil {
 		return err
@@ -265,7 +265,7 @@ func (ch *Chain) DestroyTokensOnL2(nativeTokenID iotago.NativeTokenID, amount in
 		accounts.ParamFoundrySN, toFoundrySN(nativeTokenID),
 		accounts.ParamSupplyDeltaAbs, util.ToBigInt(amount),
 		accounts.ParamDestroyTokens, true,
-	).WithAllowance(
+	).AddAllowance(
 		isc.NewAssets(0, iotago.NativeTokens{
 			&iotago.NativeToken{
 				ID:     nativeTokenID,
@@ -320,7 +320,7 @@ func (ch *Chain) TransferAllowanceTo(
 		dict.Dict{
 			accounts.ParamAgentID: codec.EncodeAgentID(targetAccount),
 		}).
-		WithAllowance(allowance).
+		AddAllowance(allowance).
 		WithFungibleTokens(allowance.Clone().AddBaseTokens(TransferAllowanceToGasBudgetBaseTokens)).
 		WithGasBudget(math.MaxUint64)
 
@@ -360,7 +360,7 @@ func (ch *Chain) Withdraw(assets *isc.Assets, user *cryptolib.KeyPair) error {
 	_, err := ch.PostRequestSync(
 		NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
 			AddAllowance(assets).
-			AddAllowance(isc.NewAssetsBaseTokens(1*isc.Million)). // for storage deposit
+			AddAllowanceBaseTokens(1*isc.Million). // for storage deposit
 			WithGasBudget(math.MaxUint64),
 		user,
 	)

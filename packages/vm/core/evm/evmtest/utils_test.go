@@ -370,7 +370,7 @@ func (e *soloChainEnv) registerERC20ExternalNativeToken(
 		evm.FieldTokenTickerSymbol: codec.EncodeString(tokenTickerSymbol),
 		evm.FieldTokenDecimals:     codec.EncodeUint8(tokenDecimals),
 		evm.FieldTargetAddress:     codec.EncodeAddress(e.soloChain.ChainID.AsAddress()),
-	}).WithMaxAffordableGasBudget().WithAllowance(isc.NewAssetsBaseTokens(1*isc.Million)), fromChain.OriginatorPrivateKey)
+	}).WithMaxAffordableGasBudget().AddAllowanceBaseTokens(1*isc.Million), fromChain.OriginatorPrivateKey)
 	if err != nil {
 		return ret, err
 	}

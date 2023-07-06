@@ -93,7 +93,7 @@ func (s ScSandbox) Balances() *ScBalances {
 }
 
 // calls a smart contract function
-func (s ScSandbox) callWithAllowance(hContract, hFunction wasmtypes.ScHname, params *ScDict, allowance *ScTransfer) *ScImmutableDict {
+func (s ScSandbox) callAddAllowance(hContract, hFunction wasmtypes.ScHname, params *ScDict, allowance *ScTransfer) *ScImmutableDict {
 	req := wasmrequests.CallRequest{
 		Contract:  hContract,
 		Function:  hFunction,
@@ -178,7 +178,7 @@ type ScSandboxView struct {
 
 // calls a smart contract view
 func (s ScSandboxView) Call(hContract, hFunction wasmtypes.ScHname, params *ScDict) *ScImmutableDict {
-	return s.callWithAllowance(hContract, hFunction, params, nil)
+	return s.callAddAllowance(hContract, hFunction, params, nil)
 }
 
 type ScSandboxFunc struct {
@@ -198,7 +198,7 @@ func (s ScSandboxFunc) Allowance() *ScBalances {
 
 // calls a smart contract function
 func (s ScSandboxFunc) Call(hContract, hFunction wasmtypes.ScHname, params *ScDict, allowance *ScTransfer) *ScImmutableDict {
-	return s.callWithAllowance(hContract, hFunction, params, allowance)
+	return s.callAddAllowance(hContract, hFunction, params, allowance)
 }
 
 // retrieve the agent id of the caller of the smart contract

@@ -135,7 +135,7 @@ func TestTutorialAccounts(t *testing.T) {
 
 	// withdraw all base tokens back to L1
 	req = solo.NewCallParams(accounts.Contract.Name, accounts.FuncWithdraw.Name).
-		WithAllowance(isc.NewAssetsBaseTokens(1 * isc.Million))
+		AddAllowanceBaseTokens(1 * isc.Million)
 
 	// estimate the gas fee and storage deposit
 	gas2, gasFee2, err := chain.EstimateGasOnLedger(req, userWallet, true)
