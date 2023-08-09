@@ -140,15 +140,15 @@ func (reqctx *requestContext) writeReceiptToBlockLog(vmError *isc.VMError) *bloc
 		SDCharged:     reqctx.sdCharged,
 	}
 
+	reqctx.Debugf("writeReceiptToBlockLog - reqID:%s", reqctx.req.ID())
 	if vmError != nil {
 		b := vmError.Bytes()
 		if len(b) > isc.VMErrorMessageLimit {
 			vmError = coreerrors.ErrErrorMessageTooLong
 		}
 		receipt.Error = vmError.AsUnresolvedError()
+		reqctx.Debugf("writeReceiptToBlockLog - reqID:%s err: %v", reqctx.req.ID(), vmError)
 	}
-
-	reqctx.Debugf("writeReceiptToBlockLog - reqID:%s err: %v", reqctx.req.ID(), vmError)
 
 	key := reqctx.requestLookupKey()
 	var err error
