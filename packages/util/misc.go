@@ -6,7 +6,10 @@ import (
 	"github.com/iotaledger/wasp/packages/hashing"
 )
 
-const WindowsOS = "windows"
+const (
+	WindowsOS = "windows"
+	MacOS     = "darwin"
+)
 
 var (
 	Big0       = big.NewInt(0)

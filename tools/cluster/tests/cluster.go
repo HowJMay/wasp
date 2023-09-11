@@ -64,7 +64,14 @@ func newCluster(t *testing.T, opt ...waspClusterOpts) *cluster.Cluster {
 	err = clu.StartAndTrustAll(dataPath)
 	require.NoError(t, err)
 
-	t.Cleanup(clu.Stop)
+	t.Cleanup(func() {
+		stopCluster(clu)
+	})
 
 	return clu
+}
+
+func stopCluster(clu *cluster.Cluster) {
+	clu.Stop()
+	l1.Stop()
 }

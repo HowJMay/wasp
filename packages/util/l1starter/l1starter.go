@@ -5,10 +5,12 @@ import (
 	"flag"
 	"os"
 	"path"
+	"runtime"
 
 	"github.com/iotaledger/wasp/packages/l1connection"
 	"github.com/iotaledger/wasp/packages/testutil/privtangle"
 	"github.com/iotaledger/wasp/packages/testutil/privtangle/privtangledefaults"
+	"github.com/iotaledger/wasp/packages/util"
 )
 
 type L1Starter struct {
@@ -50,6 +52,9 @@ func (s *L1Starter) StartPrivtangleIfNecessary(logfunc privtangle.LogFunc) {
 func (s *L1Starter) Stop() {
 	if s.Privtangle != nil {
 		s.Privtangle.Stop()
+		if runtime.GOOS == util.MacOS {
+			s.Privtangle.StopInxPluginsAll()
+		}
 	}
 }
 

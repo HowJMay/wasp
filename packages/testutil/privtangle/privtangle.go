@@ -17,6 +17,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/libp2p/go-libp2p"
@@ -50,6 +51,7 @@ type PrivTangle struct {
 	NodeCount     int
 	NodeKeyPairs  []*cryptolib.KeyPair
 	NodeCommands  []*exec.Cmd
+	inxCommands   []*exec.Cmd
 	ctx           context.Context
 	logfunc       LogFunc
 }
@@ -66,6 +68,7 @@ func Start(ctx context.Context, baseDir string, basePort, nodeCount int, logfunc
 		NodeCount:     nodeCount,
 		NodeKeyPairs:  make([]*cryptolib.KeyPair, nodeCount),
 		NodeCommands:  make([]*exec.Cmd, nodeCount),
+		inxCommands:   make([]*exec.Cmd, 2+nodeCount), // includes inx-coordinator, inx-faucet, inx-indexer (amount is 'nodeCount')
 		ctx:           ctx,
 		logfunc:       logfunc,
 	}
@@ -216,7 +219,8 @@ func (pt *PrivTangle) startCoordinator(i int, deleteExisting bool) *exec.Cmd {
 	if deleteExisting {
 		args = append(args, "--cooBootstrap")
 	}
-	return pt.startINXPlugin(i, "inx-coordinator", args, env)
+	pt.inxCommands[0] = pt.startINXPlugin(i, "inx-coordinator", args, env)
+	return pt.inxCommands[0]
 }
 
 func (pt *PrivTangle) startFaucet(i int) *exec.Cmd {
@@ -230,7 +234,8 @@ func (pt *PrivTangle) startFaucet(i int) *exec.Cmd {
 		fmt.Sprintf("--faucet.bindAddress=localhost:%d", pt.NodePortFaucet(i)),
 		"--faucet.rateLimit.enabled=false",
 	}
-	return pt.startINXPlugin(i, "inx-faucet", args, env)
+	pt.inxCommands[1] = pt.startINXPlugin(i, "inx-faucet", args, env)
+	return pt.inxCommands[1]
 }
 
 func (pt *PrivTangle) startIndexer(i int) *exec.Cmd {
@@ -238,7 +243,8 @@ func (pt *PrivTangle) startIndexer(i int) *exec.Cmd {
 		fmt.Sprintf("--inx.address=0.0.0.0:%d", pt.NodePortINX(i)),
 		fmt.Sprintf("--restAPI.bindAddress=0.0.0.0:%d", pt.NodePortIndexer(i)),
 	}
-	return pt.startINXPlugin(i, "inx-indexer", args, nil)
+	pt.inxCommands[2+i] = pt.startINXPlugin(i, "inx-indexer", args, nil)
+	return pt.inxCommands[2+i]
 }
 
 func (pt *PrivTangle) startINXPlugin(i int, plugin string, args, env []string) *exec.Cmd {
@@ -265,6 +271,10 @@ func (pt *PrivTangle) startINXPlugin(i int, plugin string, args, env []string) *
 func (pt *PrivTangle) Stop() {
 	pt.logf("Stopping...")
 	for i, c := range pt.NodeCommands {
+		if err := c.Process.Signal(syscall.Signal(0)); err != nil {
+			fmt.Printf("Hornet node [%d] has been terminated\n", i)
+			return
+		}
 		if err := c.Process.Signal(os.Interrupt); err != nil {
 			panic(fmt.Errorf("unable to send INT signal to Hornet node [%d]: %w", i, err))
 		}
@@ -424,6 +434,29 @@ func (pt *PrivTangle) waitInxPluginsFaucet(timeout time.Duration) {
 			return
 		}
 	}
+}
+
+func (pt *PrivTangle) StopInxPluginsAll() {
+	pt.logf("INX Stopping...")
+	for i, c := range pt.inxCommands {
+		if err := c.Process.Signal(syscall.Signal(0)); err != nil {
+			fmt.Printf("INX node [%d] has been terminated\n", i)
+			return
+		}
+		if err := c.Process.Signal(os.Interrupt); err != nil {
+			panic(fmt.Errorf("unable to send INT signal to INX commands[%d]: %w", i, err))
+		}
+	}
+	// FIXME INX would exit 1, if receive os.Interrupt signal
+	// for i, c := range pt.inxCommands {
+	// 	if err := c.Wait(); err != nil {
+	// 		panic(fmt.Errorf("failed while waiting for a INX commands[%d]: %w", i, err))
+	// 	}
+	// 	if !c.ProcessState.Success() {
+	// 		panic(fmt.Errorf("INX commands[%d] failed: %s", i, c.ProcessState.String()))
+	// 	}
+	// }
+	pt.logf("INX Stopping... Done")
 }
 
 type FaucetInfoResponse struct {

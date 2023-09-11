@@ -40,8 +40,6 @@ func testPermitionlessAccessNode(t *testing.T, env *ChainEnv) {
 			return configParams
 		},
 	})
-	// remove this cluster when the test ends
-	t.Cleanup(clu2.Stop)
 
 	nodeClient := env.Clu.WaspClient(0)
 	accessNodeClient := clu2.WaspClient(0)
