@@ -274,7 +274,7 @@ func (a *ackHandler) makeBatches(msgs OutMessages) OutMessages {
 			}
 		}
 		//
-		// Produce the batch and register it as unacked.
+		// Produce the batch and register it as unpacked.
 		batch := &ackHandlerBatch{
 			sender:    a.me,
 			recipient: nodeID,

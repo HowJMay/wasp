@@ -120,10 +120,10 @@ func (ww *Writer) WriteByte(val byte) *Writer {
 func (ww *Writer) WriteBytes(data []byte) *Writer {
 	if ww.Err == nil {
 		size := len(data)
-		if size > math.MaxInt32 {
+		if size > math.MaxUint16 {
 			panic("data size overflow")
 		}
-		ww.WriteSize32(size)
+		ww.WriteSize16(size)
 		if size != 0 {
 			ww.WriteN(data)
 		}
