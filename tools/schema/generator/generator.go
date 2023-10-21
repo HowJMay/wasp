@@ -43,6 +43,7 @@ type Generator struct {
 	language      string
 	newTypes      map[string]bool
 	path          string
+	localLibPath  string
 	rootFolder    string
 	s             *model.Schema
 	subFolder     string

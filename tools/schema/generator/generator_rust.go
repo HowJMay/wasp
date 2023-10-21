@@ -19,8 +19,9 @@ type RustGenerator struct {
 
 var _ IGenerator = new(RustGenerator)
 
-func NewRustGenerator(s *model.Schema) *RustGenerator {
+func NewRustGenerator(s *model.Schema, localLibPath string) *RustGenerator {
 	g := &RustGenerator{}
+	g.localLibPath = localLibPath
 	g.init(s, rstemplates.TypeDependent, rstemplates.Templates)
 	return g
 }

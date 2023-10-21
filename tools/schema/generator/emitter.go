@@ -388,6 +388,7 @@ func (g *Generator) fieldIsTypeDef() bool {
 func (g *Generator) setCommonKeys() {
 	g.keys["env_wasmlib"] = ""
 	g.keys["env_wasmvmhost"] = ""
+	g.keys["localLib"] = g.localLibPath
 	for _, env := range os.Environ() {
 		parts := strings.SplitN(env, "=", 2)
 		if len(parts) == 2 {

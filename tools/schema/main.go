@@ -28,14 +28,15 @@ import (
 const version = "schema tool version 1.1.11"
 
 var (
-	flagBuild   = flag.Bool("build", false, "build wasm target for specified languages")
-	flagClean   = flag.Bool("clean", false, "clean up files that can be re-generated for specified languages")
-	flagForce   = flag.Bool("force", false, "force code generation")
-	flagGo      = flag.Bool("go", false, "generate Go code")
-	flagInit    = flag.String("init", "", "generate new folder with schema file for smart contract named <string>")
-	flagRust    = flag.Bool("rs", false, "generate Rust code")
-	flagTs      = flag.Bool("ts", false, "generate TypScript code")
-	flagVersion = flag.Bool("version", false, "show schema tool version")
+	flagBuild    = flag.Bool("build", false, "build wasm target for specified languages")
+	flagClean    = flag.Bool("clean", false, "clean up files that can be re-generated for specified languages")
+	flagForce    = flag.Bool("force", false, "force code generation")
+	flagGo       = flag.Bool("go", false, "generate Go code")
+	flagInit     = flag.String("init", "", "generate new folder with schema file for smart contract named <string>")
+	flagLocalLib = flag.String("local-lib", "", "use local wasmlib with path provided")
+	flagRust     = flag.Bool("rs", false, "generate Rust code")
+	flagTs       = flag.Bool("ts", false, "generate TypScript code")
+	flagVersion  = flag.Bool("version", false, "show schema tool version")
 )
 
 func init() {
@@ -151,6 +152,12 @@ func generateSchema(file *os.File, core ...bool) error {
 		return err
 	}
 
+	localLibPath := ""
+	if *flagLocalLib != "" {
+		localLibPath = strings.TrimSuffix(*flagLocalLib, "/")
+		fmt.Println("set local lib at: ", localLibPath)
+	}
+
 	// Preserve line number until here
 	// comments are still preserved during generation
 	if *flagGo {
@@ -162,7 +169,7 @@ func generateSchema(file *os.File, core ...bool) error {
 	}
 
 	if *flagRust {
-		g := generator.NewRustGenerator(s)
+		g := generator.NewRustGenerator(s, localLibPath)
 		err = generateSchemaFiles(g, s.CoreContracts)
 		if err != nil {
 			return err

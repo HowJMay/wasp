@@ -44,13 +44,14 @@ description = "Wasm VM host stub for: $scDesc"
 	// *******************************
 	"dependenciesLib": `
 [dependencies]
-$env_wasmlib$+wasmlib = { git = "https://github.com/iotaledger/wasp", branch = "develop" }
+$#if localLib localWasmlib remoteWasmlib
 `,
 	// *******************************
 	"dependenciesImpl": `
 [dependencies]
 $package = { path = "../$package" }
-$env_wasmlib$+wasmlib = { git = "https://github.com/iotaledger/wasp", branch = "develop" }
+$#if localLib localWasmlib remoteWasmlib
+
 `,
 	// *******************************
 	"dependenciesWasm": `
@@ -59,8 +60,24 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 $package$+impl = { path = "../$package$+impl" }
-$env_wasmvmhost$+wasmvmhost = { git = "https://github.com/iotaledger/wasp", branch = "develop" }
+$#if localLib localWasmhost remoteWasmhost
 console_error_panic_hook = { version = "0.1.7", optional = true }
 wee_alloc = { version = "0.4.5", optional = true }
+`,
+	// *******************************
+	"localWasmlib": `
+$env_wasmlib$+wasmlib = { path = "$localLib$+/packages/wasmvm/wasmlib" }
+`,
+	// *******************************
+	"remoteWasmlib": `
+$env_wasmlib$+wasmlib = { git = "https://github.com/iotaledger/wasp", branch = "develop" }
+`,
+	// *******************************
+	"localWasmhost": `
+$env_wasmvmhost$+wasmvmhost = { path = "$localLib$+/packages/wasmvm/wasmhost" }
+`,
+	// *******************************
+	"remoteWasmhost": `
+$env_wasmvmhost$+wasmvmhost = { git = "https://github.com/iotaledger/wasp", branch = "develop" }
 `,
 }
