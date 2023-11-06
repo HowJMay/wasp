@@ -4,8 +4,11 @@
 package generator
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
+	"strings"
 
 	"github.com/iotaledger/wasp/tools/schema/generator/tstemplates"
 	"github.com/iotaledger/wasp/tools/schema/model"
@@ -37,8 +40,24 @@ func (g *TypeScriptGenerator) Build() error {
 	}
 	wasm := g.s.PackageName + "_ts.wasm"
 	fmt.Printf("building %s\n", wasm)
+	if err := npmInstall(); err != nil {
+		return err
+	}
 	args := "asc ts/main.ts -O --outFile ts/pkg/" + wasm
 	return g.build("npx", args)
+}
+
+func npmInstall() error {
+	cmd := exec.Command("npm", "install")
+	var stdout strings.Builder
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stdout
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(stdout.String())
+		return errors.New("build failed")
+	}
+	return err
 }
 
 func (g *TypeScriptGenerator) Cleanup() {
@@ -80,6 +99,11 @@ func (g *TypeScriptGenerator) GenerateInterface() error {
 		return err
 	}
 	err = g.createSourceFile("index", true)
+	if err != nil {
+		return err
+	}
+	// create package.json at the same level of schema.yaml to build wasm binary
+	err = g.generateConfig("../../", packageJSON)
 	if err != nil {
 		return err
 	}

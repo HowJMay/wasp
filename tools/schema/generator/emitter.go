@@ -6,6 +6,7 @@ package generator
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -388,11 +389,18 @@ func (g *Generator) fieldIsTypeDef() bool {
 func (g *Generator) setCommonKeys() {
 	g.keys["env_wasmlib"] = ""
 	g.keys["env_wasmvmhost"] = ""
+	g.keys["env_wasp_path"] = ""
 	for _, env := range os.Environ() {
 		parts := strings.SplitN(env, "=", 2)
 		if len(parts) == 2 {
 			g.keys["env_"+parts[0]] = strings.ReplaceAll(parts[1], "\\n", "\n")
 		}
+	}
+	// TODO fix this once we have a public npm package
+	if g.keys["env_wasp_path"] == "" {
+		fmt.Println("Error: wasmlib path is not set for dependency")
+	} else {
+		g.keys["env_wasp_path"] = filepath.Clean(g.keys["env_wasp_path"])
 	}
 	g.keys["false"] = ""
 	g.keys[KeyTrue] = KeyTrue

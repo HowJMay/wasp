@@ -120,8 +120,16 @@ import * as sc from './index';
   "author": "$author",
   "license": "Apache-2.0",
   "dependencies": {
+$#if env_wasp_path wasmlibDependencies
+		"assemblyscript": "^0.27.14"
   }
 }
+`,
+	// *******************************
+	"wasmlibDependencies": `
+		"wasmclient": "file:$env_wasp_path$+/packages/wasmvm/wasmclient/ts/wasmclient",
+		"wasmlib": "file:$env_wasp_path$+/packages/wasmvm/wasmlib/as/wasmlib",
+		"wasmvmhost": "file:$env_wasp_path$+/packages/wasmvm/wasmvmhost/ts/wasmvmhost",
 `,
 	// *******************************
 	"_eventComment": `
