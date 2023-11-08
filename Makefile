@@ -10,7 +10,6 @@ else
 BUILD_LD_FLAGS = "-X=github.com/iotaledger/wasp/components/app.Version=$(GIT_REF_TAG) -extldflags \"-z noexecstack\""
 endif
 endif
-
 DOCKER_BUILD_ARGS = # E.g. make docker-build "DOCKER_BUILD_ARGS=--tag wasp:devel"
 
 #
